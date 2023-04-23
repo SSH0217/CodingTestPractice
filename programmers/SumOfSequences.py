@@ -48,5 +48,27 @@ def solution(sequence, k):
 # 문제가 풀리긴 하지만 시간초과 및 재귀깊이 오류(너무 많이 들어감)가 남
 
 # 두 번째 풀이
+# 투 포인터를 사용해 푸는 방법
 
-
+def solution(sequence, k):
+    answers = []
+    sum = 0
+    l = 0
+    r = -1
+    
+    while True:
+        if sum < k:
+            r += 1
+            if r >= len(sequence):
+                break
+            sum += sequence[r]
+        else:
+            sum -= sequence[l]
+            if l >= len(sequence):
+                break
+            l += 1
+        if sum == k:
+            answers.append([l, r])
+    
+    answers.sort(key=lambda x: (x[1]-x[0], x[0]))
+    return answers[0]
