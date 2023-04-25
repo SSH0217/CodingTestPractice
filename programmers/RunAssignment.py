@@ -67,3 +67,43 @@ def solution(plans):
 
 # 미뤄둔 과제 진행에서 문제가 생김
 # 두 번째 풀이
+from collections import deque
+
+def solution(plans):
+    answer = []
+    pause = []
+    for i in plans:
+        i[1] = int(i[1][:2]) * 60 + int(i[1][-2:])
+        i[2] = int(i[2])
+    
+    plans.sort(key = lambda x:x[1])
+    plansQueue = deque(plans)
+    
+    now = plansQueue[0][1]
+    
+    while bool(plansQueue) or len(pause) != 0:
+        if len(pause) != 0:
+            if plansQueue and now < plansQueue[0][1]:
+                if now + pause[-1][1] <= plansQueue[0][1]:
+                    end = pause.pop()
+                    now += end[1]
+                    answer.append(end[0])
+                    continue
+                else:
+                    pause[-1][1] = now + pause[-1][1] - plansQueue[0][1]
+                    now = plansQueue[0][1]
+            elif bool(plansQueue) == False:
+                end = pause.pop()
+                answer.append(end[0])
+
+        if plansQueue:
+            assignment = plansQueue.popleft()
+            now = assignment[1]
+            if bool(plansQueue) == False or assignment[1] + assignment[2] <= plansQueue[0][1]:
+                answer.append(assignment[0])
+                now += assignment[2]
+            else:
+                pause.append([assignment[0], assignment[1] + assignment[2] - plansQueue[0][1]])
+                now = plansQueue[0][1]
+            
+    return answer
