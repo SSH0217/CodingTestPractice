@@ -77,3 +77,46 @@ def solution(park, routes):
     return answer
 
 # 두 번째 풀이
+def solution(park, routes):
+    answer = [0, 0]
+    y = 0
+    for row in park:
+        x = 0
+        for col in row:
+            if col == "S":
+                answer = [y, x]
+                break
+            x += 1
+        y += 1
+    
+    for command in routes:
+        ok = True
+        tempX, tempY = answer[1], answer[0]
+        for i in range(int(command[2])):
+            if command[0] == "N":
+                if tempY - 1 == -1 or park[tempY - 1][tempX] == "X":
+                    ok = False
+                    break
+                else:
+                    tempY -= 1
+            elif command[0] == "S":
+                if tempY + 1 == len(park) or park[tempY + 1][tempX] == "X":
+                    ok = False
+                    break
+                else:
+                    tempY += 1
+            elif command[0] == "W":
+                if tempX - 1 == -1 or park[tempY][tempX - 1] == "X":
+                    ok = False
+                    break
+                else:
+                    tempX -= 1
+            elif command[0] == "E":
+                if tempX + 1 == len(str(park[0])) or park[tempY][tempX + 1] == "X":
+                    ok = False
+                    break
+                else:
+                    tempX += 1
+        if ok:
+            answer = [tempY, tempX]
+    return answer
