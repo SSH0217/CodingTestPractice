@@ -42,6 +42,7 @@
 
 
 # 첫 번째 풀이
+# 남아있는 광물이 5개보다 적을 때 예외처리에서 오류
 from collections import deque
 def solution(picks, minerals):
     answer = 0
@@ -97,6 +98,80 @@ def solution(picks, minerals):
             if picks[0] > 0:
                 picks[0] -= 1
                 answer += 5
+            elif picks[1] > 0:
+                picks[1] -= 1
+                answer += ic
+            elif picks[2] > 0:
+                picks[2] -= 1
+                answer += sc
+    
+    return answer
+
+# 두 번째 풀이
+# diaCost를 추가해 풀이 and diaCost 삭제를 ironCost 인덱스로 삭제함
+from collections import deque
+def solution(picks, minerals):
+    answer = 0
+    mineQueue = deque(minerals)
+    
+    allPick = picks[0] + picks[1] + picks[2]
+    
+    diaCost = []
+    ironCost = []
+    stoneCost = []
+    
+    while mineQueue and allPick > 0:
+        leftMinerals = 5
+        diaCost.append(0)
+        ironCost.append(0)
+        stoneCost.append(0)
+        while mineQueue and leftMinerals > 0:
+            mineral = mineQueue.popleft()
+            if mineral == "diamond":
+                diaCost[-1] += 1
+                ironCost[-1] += 5
+                stoneCost[-1] += 25
+            elif mineral == "iron":
+                diaCost[-1] += 1
+                ironCost[-1] += 1
+                stoneCost[-1] += 5
+            else:
+                diaCost[-1] += 1
+                ironCost[-1] += 1
+                stoneCost[-1] += 1
+            leftMinerals -= 1
+        allPick -= 1
+    
+    allPick = picks[0] + picks[1] + picks[2]
+    
+    if len(ironCost) >= allPick:
+        diaCost = diaCost[0:allPick]
+        ironCost = ironCost[0:allPick]
+        stoneCost = stoneCost[0:allPick]
+        while picks[0] + picks[1] + picks[2] != 0:
+            sc = stoneCost.pop(stoneCost.index(min(stoneCost)))
+            dc = diaCost.pop(ironCost.index(min(ironCost)))
+            ic = ironCost.pop(ironCost.index(min(ironCost)))
+            if picks[2] > 0:
+                answer += sc
+                picks[2] -= 1
+                allPick -= 1
+            elif picks[1] > 0:
+                answer += ic
+                picks[1] -= 1
+                allPick -= 1
+            elif picks[0] > 0:
+                answer += dc
+                picks[0] -= 1
+                allPick -= 1
+    else:
+        while len(ironCost) != 0:
+            sc = stoneCost.pop(stoneCost.index(max(stoneCost)))
+            dc = diaCost.pop(ironCost.index(max(ironCost)))
+            ic = ironCost.pop(ironCost.index(max(ironCost)))
+            if picks[0] > 0:
+                picks[0] -= 1
+                answer += dc
             elif picks[1] > 0:
                 picks[1] -= 1
                 answer += ic
