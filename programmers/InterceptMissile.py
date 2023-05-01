@@ -36,3 +36,22 @@ def solution(targets):
     return answer
 
 # 두 번째 풀이
+from collections import deque
+def solution(targets):
+    answer = 0
+    targets = deque(sorted(targets))
+    
+    cur = targets[0][1]
+    bef = targets[0][1]
+    
+    while targets:
+        target = targets.popleft()
+        if target[1] <= cur:
+            cur = target[1]
+        elif target[0] >= cur:
+            cur = target[1]
+            answer += 1
+            
+        if bool(targets) == False:
+            answer += 1
+    return answer
