@@ -36,3 +36,17 @@ def solution(r1, r2):
     answer += (r2 - r1 + 1) * 4
     
     return answer
+
+# 세 번째 풀이
+def solution(r1, r2):
+    answer = 0
+    ymin, ymax = r1, r2
+    
+    for x in range(0, r2):
+        while ymin > 1 and x**2 + (ymin - 1)**2 >= r1**2:
+            ymin -= 1
+        while x**2 + ymax**2 > r2**2:
+            ymax -= 1
+        answer += ymax - ymin + 1
+    answer *= 4
+    return answer
