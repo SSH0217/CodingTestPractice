@@ -23,3 +23,16 @@ def solution(r1, r2):
     return answer
 
 # 두 번쨰 풀이
+# 시간 초과
+def solution(r1, r2):
+    answer = 0
+    
+    for x in range(1, r2 + 1):
+        for y in range(1, r2 + 1):
+            dis = x**2 + y**2
+            if r1**2 <= dis and dis <= r2**2:
+                answer += 1
+    answer *= 4
+    answer += (r2 - r1 + 1) * 4
+    
+    return answer
