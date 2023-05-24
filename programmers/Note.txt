@@ -16,6 +16,12 @@ deque.popleft()
 deque.append(뭐시기)
 bool(deque) <= False면 empty
 
+배열 선언시
+M, N = 3, 4
+[[0 for _ in M] for _ in M]
+결과
+[0, 0, 0][0, 0, 0][0, 0, 0][0, 0, 0][0, 0, 0]
+
 2. 문제 유형별 정리
 BFS 탐색
     RicochetRobot.py
